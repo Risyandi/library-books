@@ -28,3 +28,20 @@ type Books struct {
 	CreatedAt     string             `json:"createdAt" bson:"createdAt"`
 	UpdatedAt     string             `json:"updatedAt" bson:"updatedAt"`
 }
+
+// * struct for url processing
+type URL struct {
+	URL       string      `json:"url" bson:"url"`
+	Operation string      `json:"operation" bson:"operation"`
+	Response  URLResponse `json:"response" bson:"response"`
+	CreatedAt string      `json:"createdAt" bson:"createdAt"`
+}
+
+type URLRequest struct {
+	URL       string `json:"url" binding:"required,url"`
+	Operation string `json:"operation" binding:"required"`
+}
+
+type URLResponse struct {
+	ProcessedURL string `json:"processed_url"`
+}

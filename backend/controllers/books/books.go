@@ -6,7 +6,9 @@ import (
 	"library-books/database/mongodb"
 	"library-books/entity"
 	"library-books/helpers"
+	"library-books/services"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +22,51 @@ var Validate *validator.Validate
 
 type BooksController struct {
 	Validate *validator.Validate
+}
+
+// AddUrlHandler godoc
+// @Summary Process and normalize a URL
+// @Description Accepts a URL and an operation, processes the URL accordingly, and returns the result
+// @Tags Books
+// @Accept json
+// @Produce json
+// @Param url body entity.URLRequest true "URL and operation to process"
+// @Success 201 {object} helpers.Response "URL processed successfully"
+// @Failure 400 {object} helpers.Response "Invalid input or operation"
+// @Failure 500 {object} helpers.Response "Server error"
+// @Router /books/url [post]
+func (h *BooksController) AddUrlHandler(ctx *gin.Context) {
+	var req entity.URLRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		helpers.BadRequest(ctx, http.StatusBadRequest, constant.ErrorInvalidInput)
+		return
+	}
+
+	// Normalize operation to lowercase
+	req.Operation = strings.ToLower(req.Operation)
+	processed, err := services.ProcessURL(req.URL, req.Operation)
+	if err != nil {
+		if err == services.ErrInvalidOperation {
+			helpers.BadRequest(ctx, http.StatusBadRequest, constant.ErrorInvalidInput)
+			return
+		}
+		helpers.ServerError(ctx, http.StatusInternalServerError, constant.ErrorDatabase)
+		return
+	}
+
+	var URLs = entity.URL{
+		URL:       req.URL,
+		Operation: req.Operation,
+		Response:  entity.URLResponse{ProcessedURL: processed},
+		CreatedAt: time.Now().String(),
+	}
+	_, err = mongodb.Database.Collection("urls").InsertOne(context.Background(), URLs)
+	if err != nil {
+		helpers.ServerError(ctx, http.StatusInternalServerError, constant.ErrorDatabase)
+		return
+	}
+
+	helpers.Success(ctx, http.StatusCreated, constant.SuccessAddUrl, entity.URLResponse{ProcessedURL: processed})
 }
 
 // AddBookHandler godoc

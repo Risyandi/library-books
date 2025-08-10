@@ -224,6 +224,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/books/url": {
+            "post": {
+                "description": "Accepts a URL and an operation, processes the URL accordingly, and returns the result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Process and normalize a URL",
+                "parameters": [
+                    {
+                        "description": "URL and operation to process",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.URLRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "URL processed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input or operation",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/books/{id}": {
             "get": {
                 "description": "Get a book by its ID from the library",
@@ -385,10 +431,6 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "author",
-                "coverImageUrl",
-                "description",
-                "genre",
-                "isbn",
                 "title",
                 "year"
             ],
@@ -418,6 +460,21 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "year": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.URLRequest": {
+            "type": "object",
+            "required": [
+                "operation",
+                "url"
+            ],
+            "properties": {
+                "operation": {
+                    "type": "string"
+                },
+                "url": {
                     "type": "string"
                 }
             }

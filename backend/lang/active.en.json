@@ -1,7 +1,7 @@
 {
   "error_database": "Database Error",
   "error_invalid_input": "Invalid Input",
-
+  "success_add_url": "URL Successfully Processed",
   "success_add_book": "Books Successfully Added",
   "success_get_book": "Books Successfully Retrieved",
   "success_update_book": "Books Successfully Updated",

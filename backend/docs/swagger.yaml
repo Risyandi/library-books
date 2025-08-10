@@ -22,12 +22,18 @@ definitions:
         type: string
     required:
     - author
-    - coverImageUrl
-    - description
-    - genre
-    - isbn
     - title
     - year
+    type: object
+  entity.URLRequest:
+    properties:
+      operation:
+        type: string
+      url:
+        type: string
+    required:
+    - operation
+    - url
     type: object
   entity.User:
     properties:
@@ -301,6 +307,37 @@ paths:
           schema:
             $ref: '#/definitions/helpers.Response'
       summary: Update a book by ID
+      tags:
+      - Books
+  /books/url:
+    post:
+      consumes:
+      - application/json
+      description: Accepts a URL and an operation, processes the URL accordingly,
+        and returns the result
+      parameters:
+      - description: URL and operation to process
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/entity.URLRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: URL processed successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input or operation
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Process and normalize a URL
       tags:
       - Books
 schemes:

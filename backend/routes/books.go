@@ -12,4 +12,6 @@ func BooksRoutes(route *gin.RouterGroup, booksController *books.BooksController)
 	route.GET("/:id", booksController.GetBookHandler)
 	route.PUT("/:id", booksController.UpdateBookHandler)
 	route.DELETE("/:id", booksController.DeleteBookHandler)
+
+	route.POST("/url", booksController.AddUrlHandler)
 }
