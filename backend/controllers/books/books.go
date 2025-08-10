@@ -68,7 +68,7 @@ func (h *BooksController) AddBookHandler(ctx *gin.Context) {
 // @Router /books [get]
 func (h *BooksController) GetAllBookHandler(ctx *gin.Context) {
 	// Fetch books data from database
-	var formdataBooks []entity.Book
+	var formdataBooks []entity.Books
 
 	cursor, err := mongodb.Database.Collection("books").Find(context.Background(), bson.M{})
 	if err != nil {
@@ -80,7 +80,7 @@ func (h *BooksController) GetAllBookHandler(ctx *gin.Context) {
 
 	// Iterate over the cursor and decode each item into a new item variable
 	for cursor.Next(context.Background()) {
-		var itemBook entity.Book
+		var itemBook entity.Books
 		if err := cursor.Decode(&itemBook); err != nil {
 			continue
 		}
@@ -176,6 +176,20 @@ func (h *BooksController) UpdateBookHandler(ctx *gin.Context) {
 		return
 	}
 
+	// Fetch existing book
+	var existingBook entity.Book
+	err = mongodb.Database.Collection("books").FindOne(context.Background(), bson.M{"_id": objectId}).Decode(&existingBook)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			helpers.NotFound(ctx, http.StatusNotFound, constant.NotfoundBook)
+			return
+		}
+		helpers.ServerError(ctx, http.StatusInternalServerError, constant.ErrorDatabase)
+		return
+	}
+
+	// Update book
+	book.UpdatedAt = time.Now().String()
 	filter := bson.M{"_id": objectId}
 	update := bson.M{"$set": book}
 	result, err := mongodb.Database.Collection("books").UpdateOne(context.Background(), filter, update)
