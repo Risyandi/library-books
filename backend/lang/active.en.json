@@ -1,0 +1,10 @@
+{
+  "error_database": "Database Error",
+  "error_invalid_input": "Invalid Input",
+
+  "success_add_book": "Books Successfully Added",
+  "success_get_book": "Books Successfully Retrieved",
+  "success_update_book": "Books Successfully Updated",
+  "success_delete_book": "Books Successfully Deleted",
+  "notfound_book": "Book Not Found"
+}

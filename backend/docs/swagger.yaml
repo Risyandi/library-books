@@ -1,0 +1,304 @@
+basePath: /api/v1
+definitions:
+  entity.Book:
+    properties:
+      author:
+        type: string
+      coverImageUrl:
+        type: string
+      description:
+        type: string
+      genre:
+        type: string
+      isbn:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    required:
+    - author
+    - coverImageUrl
+    - description
+    - genre
+    - isbn
+    - title
+    - year
+    type: object
+  entity.User:
+    properties:
+      id:
+        type: string
+      msisdn:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - msisdn
+    - name
+    - password
+    - username
+    type: object
+  helpers.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: hello@risyandi.com
+    name: Risyandi API Maintainer
+    url: https://risyandi.com
+  description: RESTful API for managing library books, users, and related services
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://swagger.io/terms/
+  title: Library Books API
+  version: "1.0"
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: API endpoint for user login to receive JWT token
+      parameters:
+      - description: User login data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful, returns token and expiration
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Failed to generate token or database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Login user and generate authentication token
+      tags:
+      - Authentication
+  /api/v1/auth/profile:
+    get:
+      consumes:
+      - application/json
+      description: API endpoint to get user profile based on JWT
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Get user profile
+      tags:
+      - Authentication
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: API endpoint to register new users
+      parameters:
+      - description: User registration data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input or user already exists
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Register a new user
+      tags:
+      - Authentication
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Get all books from the library
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Books retrieved successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Get all books
+      tags:
+      - Books
+    post:
+      consumes:
+      - application/json
+      description: Add a new book to the library
+      parameters:
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Book added successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Add a new book
+      tags:
+      - Books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a book by its ID from the library
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book deleted successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "404":
+          description: Book not found
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Delete a book by ID
+      tags:
+      - Books
+    get:
+      consumes:
+      - application/json
+      description: Get a book by its ID from the library
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book retrieved successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "404":
+          description: Book not found
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Get a book by ID
+      tags:
+      - Books
+    put:
+      consumes:
+      - application/json
+      description: Update a book by its ID in the library
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book updated successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "404":
+          description: Book not found
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "500":
+          description: Database error
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Update a book by ID
+      tags:
+      - Books
+schemes:
+- http
+swagger: "2.0"

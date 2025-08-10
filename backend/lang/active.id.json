@@ -1,0 +1,10 @@
+{
+  "error_database": "Basis Data Keliru",
+  "error_invalid_input": "Input Tidak Valid",
+
+  "success_add_book": "Buku Berhasil Didaftarkan",
+  "success_get_book": "Buku Berhasil Ditemukan",
+  "success_update_book": "Buku Berhasil Diperbarui",
+  "success_delete_book": "Buku Berhasil Dihapus",
+  "notfound_book": "Buku Tidak Ditemukan"
+}
