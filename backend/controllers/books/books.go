@@ -7,6 +7,7 @@ import (
 	"library-books/entity"
 	"library-books/helpers"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -46,6 +47,7 @@ func (h *BooksController) AddBookHandler(ctx *gin.Context) {
 	}
 
 	// Insert courier data into database
+	book.CreatedAt = time.Now().String()
 	_, err := mongodb.Database.Collection("books").InsertOne(context.Background(), book)
 	if err != nil {
 		helpers.ServerError(ctx, http.StatusInternalServerError, constant.ErrorDatabase)
@@ -65,16 +67,10 @@ func (h *BooksController) AddBookHandler(ctx *gin.Context) {
 // @Failure 500 {object} helpers.Response "Database error"
 // @Router /books [get]
 func (h *BooksController) GetAllBookHandler(ctx *gin.Context) {
-	var book entity.Book
-	if err := ctx.ShouldBindJSON(&book); err != nil {
-		helpers.BadRequest(ctx, http.StatusBadRequest, constant.ErrorInvalidInput)
-		return
-	}
-
 	// Fetch books data from database
 	var formdataBooks []entity.Book
 
-	cursor, err := mongodb.Database.Collection("logistic").Find(context.Background(), bson.M{})
+	cursor, err := mongodb.Database.Collection("books").Find(context.Background(), bson.M{})
 	if err != nil {
 		helpers.ServerError(ctx, http.StatusInternalServerError, constant.ErrorDatabase)
 		return

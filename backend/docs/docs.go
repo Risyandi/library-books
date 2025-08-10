@@ -399,6 +399,9 @@ const docTemplate = `{
                 "coverImageUrl": {
                     "type": "string"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
                 "description": {
                     "type": "string"
                 },
@@ -411,8 +414,11 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
+                "updatedAt": {
+                    "type": "string"
+                },
                 "year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },

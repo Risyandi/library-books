@@ -39,7 +39,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
 
 ## API Documentation
 
-- For detailed API endpoints, import the Postman collection: [Orderfaz Postman Collection](./docs/postman/Orderfaz.postman_collection.json)
 - For Swagger documentation, visit: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 
 ## Adding Swagger Comments for New Endpoints

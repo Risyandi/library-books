@@ -6,6 +6,8 @@ definitions:
         type: string
       coverImageUrl:
         type: string
+      createdAt:
+        type: string
       description:
         type: string
       genre:
@@ -14,8 +16,10 @@ definitions:
         type: string
       title:
         type: string
+      updatedAt:
+        type: string
       year:
-        type: integer
+        type: string
     required:
     - author
     - coverImageUrl

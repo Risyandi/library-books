@@ -7,9 +7,9 @@ import (
 )
 
 func BooksRoutes(route *gin.RouterGroup, booksController *books.BooksController) {
-	route.POST("/books", booksController.AddBookHandler)
-	route.GET("/books", booksController.GetAllBookHandler)
-	route.GET("/books/:id", booksController.GetBookHandler)
-	route.PUT("/books/:id", booksController.UpdateBookHandler)
-	route.DELETE("/books/:id", booksController.DeleteBookHandler)
+	route.POST("/", booksController.AddBookHandler)
+	route.GET("/", booksController.GetAllBookHandler)
+	route.GET("/:id", booksController.GetBookHandler)
+	route.PUT("/:id", booksController.UpdateBookHandler)
+	route.DELETE("/:id", booksController.DeleteBookHandler)
 }

@@ -63,7 +63,7 @@ func SetupRouter(validate *validator.Validate) *gin.Engine {
 		AuthUsersGroup := group.Group("auth")
 		AuthUsersRoutes(AuthUsersGroup, &users.UsersController{Validate: validate})
 
-		BooksGroup := group.Group("books", middleware.AuthMiddleware())
+		BooksGroup := group.Group("books")
 		BooksRoutes(BooksGroup, &books.BooksController{Validate: validate})
 	}
 
