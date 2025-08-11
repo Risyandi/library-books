@@ -5,6 +5,7 @@ A comprehensive book collection management system built with React/Next.js and T
 ## 🚀 Features
 
 ### Core Functionality
+
 - **📚 Dashboard View**: Responsive grid layout displaying all books with thumbnail cards
 - **➕ Add Books**: Modal-based form to add new books with validation
 - **✏️ Edit Books**: Update existing book information with pre-populated forms
@@ -14,6 +15,7 @@ A comprehensive book collection management system built with React/Next.js and T
 - **💾 Data Persistence**: Local storage integration to maintain data between sessions
 
 ### Technical Features
+
 - **TypeScript**: Full type safety throughout the application
 - **React Context API**: Global state management for books and UI state
 - **Form Validation**: Real-time client-side validation with error feedback
@@ -27,11 +29,13 @@ A comprehensive book collection management system built with React/Next.js and T
 Each book includes the following fields:
 
 ### Required Fields
+
 - **Title**: String (minimum 2 characters)
 - **Author**: String (minimum 2 characters)  
 - **Year**: Number (1000 - current year + 10)
 
 ### Optional Fields
+
 - **ISBN**: String
 - **Genre**: Dropdown selection from predefined genres
 - **Description**: Multi-line text area
@@ -40,18 +44,21 @@ Each book includes the following fields:
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
+
 - Node.js (version 14 or higher)
 - npm or yarn package manager
 
 ### Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd library-manager
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -59,6 +66,7 @@ Each book includes the following fields:
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    # or
@@ -104,31 +112,36 @@ Each book includes the following fields:
 ## 🌟 Usage Guide
 
 ### Adding a Book
+
 1. Click the "Add Book" button in the header
 2. Fill in the required fields (Title, Author, Year)
 3. Optionally add ISBN, genre, description, and cover image URL
 4. Click "Add Book" to save
 
 ### Searching Books
+
 - Use the search bar in the header
 - Search works across book titles, authors, and genres
 - Results update in real-time as you type
 
 ### Editing a Book
+
 1. Click the edit button on any book card (or in detail view)
 2. Update the desired fields in the modal form
 3. Click "Update Book" to save changes
 
 ### Viewing Book Details
+
 - Click the "View" button on any book card
 - Or click on the book title to navigate to detailed view
 - Use breadcrumb navigation to return to the main library
 
 ### Deleting a Book
+
 1. Click the delete button on any book card
 2. Confirm deletion in the modal dialog
 3. The book will be permanently removed from your collection
-   
+
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
