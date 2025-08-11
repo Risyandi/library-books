@@ -37,6 +37,8 @@ func SetupRouter(validate *validator.Validate) *gin.Engine {
 
 	// gin recovery handle middleware error and enable cors configuration
 	router.Use(gin.Recovery())
+
+	// solutions 1
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "PUT", "PATCH", "DELETE", "POST", "OPTIONS"},
@@ -45,6 +47,15 @@ func SetupRouter(validate *validator.Validate) *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	// solutions 2
+	// corsConfig := cors.DefaultConfig()
+	// corsConfig.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+	// router.Use(cors.New(corsConfig))
+
+	// solutions 3
+	// corsMiddleware := middleware.CorsAllowMiddleware()
+	// router.Use(corsMiddleware)
 
 	// endpoint API for health checking
 	router.GET("/ping", func(ctx *gin.Context) {
