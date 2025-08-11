@@ -59,40 +59,51 @@ export function BookProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const savedBooks = localStorage.getItem('library-books');
+      const savedBooks = localStorage.getItem('library-books')
       if (savedBooks) {
         const books = JSON.parse(savedBooks);
-        dispatch({ type: 'SET_BOOKS', payload: books });
+        if (books && Array.isArray(books)) {
+          dispatch({ type: 'SET_BOOKS', payload: books });
+        } else {
+          dispatch({ type: 'SET_BOOKS', payload: [] });
+        }
       } else {
-        // Initialize with some sample data
-        const sampleBooks: Book[] = [
-          {
-            id: '1',
-            title: 'The Passion within',
-            author: 'Harper Lee',
-            year: 1960,
-            genre: 'Fiction',
-            description: 'A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice.',
-            isbn: '978-0-06-112008-4',
-            coverImageUrl: 'https://images.pexels.com/photos/256450/pexels-photo-256450.jpeg',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
-          {
-            id: '2',
-            title: 'Graphic Design',
-            author: 'George Orwell',
-            year: 1949,
-            genre: 'Dystopian Fiction',
-            description: 'A dystopian social science fiction novel that explores themes of totalitarianism, mass surveillance, and repressive regimentation.',
-            isbn: '978-0-452-28423-4',
-            coverImageUrl: 'https://images.pexels.com/photos/3747266/pexels-photo-3747266.jpeg',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
-        ];
-        dispatch({ type: 'SET_BOOKS', payload: sampleBooks });
-        localStorage.setItem('library-books', JSON.stringify(sampleBooks));
+        const response = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/books/`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        response.then(res => res.json()).then(data => {
+          dispatch({ type: 'SET_BOOKS', payload: data.data });
+          localStorage.setItem('library-books', JSON.stringify(data.data));
+        }).catch(error => {
+          // Initialize with some sample data
+          const sampleBooks: Book[] = [
+            {
+              id: '1',
+              title: 'The Passion within',
+              author: 'Harper Lee',
+              year: 1960,
+              genre: 'Fiction',
+              description: 'A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice.',
+              isbn: '978-0-06-112008-4',
+              coverImageUrl: 'https://images.pexels.com/photos/256450/pexels-photo-256450.jpeg',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              title: 'Graphic Design',
+              author: 'George Orwell',
+              year: 1949,
+              genre: 'Dystopian Fiction',
+              description: 'A dystopian social science fiction novel that explores themes of totalitarianism, mass surveillance, and repressive regimentation.',
+              isbn: '978-0-452-28423-4',
+              coverImageUrl: 'https://images.pexels.com/photos/3747266/pexels-photo-3747266.jpeg',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            },
+          ];
+          console.log(error, 'error');
+          dispatch({ type: 'SET_BOOKS', payload: sampleBooks });
+          localStorage.setItem('library-books', JSON.stringify(sampleBooks));
+        })
       }
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to load books from storage' });
@@ -116,8 +127,15 @@ export function BookProvider({ children }: { children: ReactNode }) {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      dispatch({ type: 'ADD_BOOK', payload: newBook });
-      dispatch({ type: 'SET_ERROR', payload: null });
+      const response = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/books/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newBook) });
+      response.then(res => res.json()).then(data => {
+        if (data.code === 200) {
+          dispatch({ type: 'ADD_BOOK', payload: newBook });
+          dispatch({ type: 'SET_ERROR', payload: null });
+        }
+      }).catch(error => {
+        console.log(error, 'error');
+      })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to add book' });
     }
@@ -136,8 +154,16 @@ export function BookProvider({ children }: { children: ReactNode }) {
         ...bookData,
         updatedAt: new Date().toISOString(),
       };
-      dispatch({ type: 'UPDATE_BOOK', payload: updatedBook });
-      dispatch({ type: 'SET_ERROR', payload: null });
+
+      const response = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/books/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedBook) });
+      response.then(res => res.json()).then(data => {
+        if (data.code === 200) {
+          dispatch({ type: 'UPDATE_BOOK', payload: updatedBook });
+          dispatch({ type: 'SET_ERROR', payload: null });
+        }
+      }).catch(error => {
+        console.log(error, 'error');
+      })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to update book' });
     }
@@ -145,8 +171,15 @@ export function BookProvider({ children }: { children: ReactNode }) {
 
   const deleteBook = (id: string) => {
     try {
-      dispatch({ type: 'DELETE_BOOK', payload: id });
-      dispatch({ type: 'SET_ERROR', payload: null });
+      const response = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/books/${id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+      response.then(res => res.json()).then(data => {
+        if (data.code === 200) {
+          dispatch({ type: 'DELETE_BOOK', payload: id });
+          dispatch({ type: 'SET_ERROR', payload: null });
+        }
+      }).catch(error => {
+        console.log(error, 'error');
+      })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to delete book' });
     }
@@ -158,7 +191,7 @@ export function BookProvider({ children }: { children: ReactNode }) {
 
   const searchBooks = (query: string): Book[] => {
     if (!query.trim()) return state.books;
-    
+
     const lowerQuery = query.toLowerCase();
     return state.books.filter(
       book =>

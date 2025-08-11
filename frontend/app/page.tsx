@@ -71,7 +71,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner size="lg" />
           </div>
-        ) : filteredBooks.length === 0 ? (
+        ) : filteredBooks.length === 0  || filteredBooks === undefined ? (
           <EmptyState 
             isSearching={Boolean(searchQuery.trim())} 
             searchQuery={searchQuery} 

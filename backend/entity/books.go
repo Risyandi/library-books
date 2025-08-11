@@ -7,7 +7,7 @@ import (
 type Book struct {
 	Title         string `json:"title" bson:"title" validate:"required"`
 	Author        string `json:"author" bson:"author" validate:"required"`
-	Year          string `json:"year" bson:"year" validate:"required"`
+	Year          int    `json:"year" bson:"year" validate:"required"`
 	ISBN          string `json:"isbn" bson:"isbn"`
 	Genre         string `json:"genre" bson:"genre"`
 	Description   string `json:"description" bson:"description"`
@@ -20,7 +20,7 @@ type Books struct {
 	ID            primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Title         string             `json:"title" bson:"title" validate:"required"`
 	Author        string             `json:"author" bson:"author" validate:"required"`
-	Year          string             `json:"year" bson:"year" validate:"required"`
+	Year          int                `json:"year" bson:"year" validate:"required"`
 	ISBN          string             `json:"isbn" bson:"isbn"`
 	Genre         string             `json:"genre" bson:"genre"`
 	Description   string             `json:"description" bson:"description"`

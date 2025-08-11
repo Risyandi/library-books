@@ -48,5 +48,5 @@ export interface UIContextType {
 export interface FormErrors {
   title?: string;
   author?: string;
-  year?: string;
+  year?: number;
 }
